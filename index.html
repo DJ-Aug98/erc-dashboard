@@ -115,17 +115,17 @@ html, body {
 /* ════════ MAIN ════════ */
 .main {
   display: grid;
-  grid-template-rows: 2fr 2fr auto;
+  grid-template-rows: 1fr 1fr;
   min-height: 0; overflow: hidden;
   transition: grid-template-rows 0.3s ease;
 }
-.main.reach-collapsed                        { grid-template-rows: auto 1fr auto; }
-.main.engagement-collapsed                   { grid-template-rows: 1fr auto auto; }
-.main.reach-collapsed.engagement-collapsed   { grid-template-rows: auto auto auto; }
+.main.reach-collapsed                        { grid-template-rows: auto 1fr; }
+.main.engagement-collapsed                   { grid-template-rows: 1fr auto; }
+.main.reach-collapsed.engagement-collapsed   { grid-template-rows: auto auto; }
 
 /* Collapse toggle button on section strips */
 .strip-toggle {
-  margin-left: auto;
+  margin-left: 0; margin-right: 2px;
   background: rgba(255,255,255,0.12);
   border: 1px solid rgba(255,255,255,0.22);
   color: white; border-radius: 3px; cursor: pointer;
@@ -508,10 +508,10 @@ html, body {
     <!-- ▸ REACH -->
     <div class="reach">
       <div class="section-strip">
+        <button class="strip-toggle" data-section="reach" title="Collapse Reach">−</button>
         <h2>Reach</h2>
         <span class="sub">Who comes to the site, from where, and how</span>
         <span class="strip-pill">Jan–Dec 2025</span>
-        <button class="strip-toggle" data-section="reach" title="Collapse Reach">−</button>
       </div>
       <div class="reach-panels">
 
@@ -691,10 +691,10 @@ html, body {
     <!-- ▸ ENGAGEMENT -->
     <div class="engagement">
       <div class="section-strip">
+        <button class="strip-toggle" data-section="engagement" title="Collapse Engagement">−</button>
         <h2>Engagement</h2>
         <span class="sub">Depth of interaction, session quality, and content popularity</span>
         <span class="strip-pill">Jan–Dec 2025</span>
-        <button class="strip-toggle" data-section="engagement" title="Collapse Engagement">−</button>
       </div>
       <div class="engagement-panels">
 
@@ -760,20 +760,6 @@ html, body {
 
       </div><!-- /engagement-panels -->
     </div><!-- /engagement -->
-
-    <!-- ▸ IMPACT -->
-    <div class="impact">
-      <div class="impact-label">Impact</div>
-      <div class="impact-body">
-        <strong>Measuring impact remains a challenge for the ERC.</strong> With 93.2% of visitors anonymous, the platform cannot yet track downstream outcomes — which educators applied strategies, for which students, or with what results. Direct impact data is not available from current systems. What is observable: educators engaged at depth sufficient to register, save content, and cite evidence.
-      </div>
-      <div class="impact-stats">
-        <div class="impact-stat"><div class="isv">581</div><div class="isl">Registered</div></div>
-        <div class="impact-stat"><div class="isv">4,807</div><div class="isl">Clicked Evidence</div></div>
-        <div class="impact-stat"><div class="isv">449</div><div class="isl">Cited Sources</div></div>
-        <div class="impact-stat"><div class="isv">259</div><div class="isl">Strategies Saved</div></div>
-      </div>
-    </div>
 
   </div><!-- /main -->
 
