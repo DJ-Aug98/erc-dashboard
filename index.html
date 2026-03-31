@@ -584,58 +584,58 @@ html, body {
           <div class="sankey-wrap">
             <svg id="sankey-svg" viewBox="0 0 540 375" preserveAspectRatio="xMidYMid meet" xmlns="http://www.w3.org/2000/svg">
               <!--
-                Proportional layout: min 20px per bar, remaining 210px distributed by share.
-                Total bar space: y=10→365 = 355px. Gaps: 5×5px = 25px → 330px bars.
-                  Direct    39.7% → 104px  y=10→114    dst y=10→151
-                  Google    35.0% →  93px  y=119→212   dst y=151→275
-                  PA.gov     8.5% →  38px  y=217→255   dst y=275→305
-                  SAS Portal 7.0% →  35px  y=260→295   dst y=305→330
-                  Bing       2.0% →  24px  y=300→324   dst y=330→337
-                  Other      7.8% →  36px  y=329→365   dst y=337→365
+                Proportional layout: min 20px per bar, 8px gaps.
+                Total: y=10→365 = 355px. Gaps: 5×8px = 40px → 315px bars.
+                  Direct    39.7% →  97px  y=10→107    dst y=10→151
+                  Google    35.0% →  88px  y=115→203   dst y=151→275
+                  PA.gov     8.5% →  37px  y=211→248   dst y=275→305
+                  SAS Portal 7.0% →  34px  y=256→290   dst y=305→330
+                  Bing       2.0% →  24px  y=298→322   dst y=330→337
+                  Other      7.8% →  35px  y=330→365   dst y=337→365
               -->
 
               <!-- ── Labels (right-aligned, x=142) ── -->
-              <text x="142" y="56"  text-anchor="end" font-family="Open Sans" font-size="11" fill="#1A2B35" font-weight="600">Direct</text>
-              <text x="142" y="69"  text-anchor="end" font-family="Open Sans" font-size="9"  fill="#6B7280">3,390 · 39.7%</text>
+              <text x="142" y="52"  text-anchor="end" font-family="Open Sans" font-size="11" fill="#1A2B35" font-weight="600">Direct</text>
+              <text x="142" y="65"  text-anchor="end" font-family="Open Sans" font-size="9"  fill="#6B7280">3,390 · 39.7%</text>
 
-              <text x="142" y="159" text-anchor="end" font-family="Open Sans" font-size="11" fill="#1A2B35" font-weight="600">Google</text>
-              <text x="142" y="172" text-anchor="end" font-family="Open Sans" font-size="9"  fill="#6B7280">2,986 · 35.0%</text>
+              <text x="142" y="153" text-anchor="end" font-family="Open Sans" font-size="11" fill="#1A2B35" font-weight="600">Google</text>
+              <text x="142" y="166" text-anchor="end" font-family="Open Sans" font-size="9"  fill="#6B7280">2,986 · 35.0%</text>
 
-              <text x="142" y="230" text-anchor="end" font-family="Open Sans" font-size="11" fill="#1A2B35" font-weight="600">PA.gov</text>
-              <text x="142" y="243" text-anchor="end" font-family="Open Sans" font-size="9"  fill="#6B7280">728 · 8.5% ↑955%</text>
+              <text x="142" y="223" text-anchor="end" font-family="Open Sans" font-size="11" fill="#1A2B35" font-weight="600">PA.gov</text>
+              <text x="142" y="236" text-anchor="end" font-family="Open Sans" font-size="9"  fill="#6B7280">728 · 8.5%</text>
 
-              <text x="142" y="271" text-anchor="end" font-family="Open Sans" font-size="11" fill="#1A2B35" font-weight="600">SAS Portal</text>
-              <text x="142" y="284" text-anchor="end" font-family="Open Sans" font-size="9"  fill="#6B7280">595 · 7.0%</text>
+              <text x="142" y="267" text-anchor="end" font-family="Open Sans" font-size="11" fill="#1A2B35" font-weight="600">SAS Portal</text>
+              <text x="142" y="280" text-anchor="end" font-family="Open Sans" font-size="9"  fill="#6B7280">595 · 7.0%</text>
 
-              <text x="142" y="306" text-anchor="end" font-family="Open Sans" font-size="11" fill="#1A2B35" font-weight="600">Bing</text>
-              <text x="142" y="319" text-anchor="end" font-family="Open Sans" font-size="9"  fill="#6B7280">172 · 2.0%</text>
+              <text x="142" y="304" text-anchor="end" font-family="Open Sans" font-size="11" fill="#1A2B35" font-weight="600">Bing</text>
+              <text x="142" y="317" text-anchor="end" font-family="Open Sans" font-size="9"  fill="#6B7280">172 · 2.0%</text>
 
               <text x="142" y="341" text-anchor="end" font-family="Open Sans" font-size="11" fill="#6B7280" font-weight="600">Other (132 sources)</text>
               <text x="142" y="354" text-anchor="end" font-family="Open Sans" font-size="9"  fill="#9CA3AF">662 · 7.8%</text>
 
               <!-- ── Source node bars (x=148, width=15) ── -->
-              <rect x="148" y="10"  width="15" height="104" rx="2" fill="#0A5562"/>
-              <rect x="148" y="119" width="15" height="93"  rx="2" fill="#0D6E7A"/>
-              <rect x="148" y="217" width="15" height="38"  rx="2" fill="#1A8FA0"/>
-              <rect x="148" y="260" width="15" height="35"  rx="2" fill="#5BA8B5"/>
-              <rect x="148" y="300" width="15" height="24"  rx="2" fill="#A8D5DC"/>
-              <rect x="148" y="329" width="15" height="36"  rx="2" fill="#9CA3AF"/>
+              <rect x="148" y="10"  width="15" height="97" rx="2" fill="#0A5562"/>
+              <rect x="148" y="115" width="15" height="88" rx="2" fill="#0D6E7A"/>
+              <rect x="148" y="211" width="15" height="37" rx="2" fill="#1A8FA0"/>
+              <rect x="148" y="256" width="15" height="34" rx="2" fill="#5BA8B5"/>
+              <rect x="148" y="298" width="15" height="24" rx="2" fill="#A8D5DC"/>
+              <rect x="148" y="330" width="15" height="35" rx="2" fill="#9CA3AF"/>
 
               <!-- ── Flow paths ── -->
-              <!-- Direct: src y=10→114, dst y=10→151 -->
-              <path d="M163,10  C272,10  272,10  380,10  L380,151 C272,151 272,114 163,114 Z" fill="#0A5562" opacity="0.28"/>
-              <!-- Google: src y=119→212, dst y=151→275 -->
-              <path d="M163,119 C272,119 272,151 380,151 L380,275 C272,275 272,212 163,212 Z" fill="#0D6E7A" opacity="0.28"/>
-              <!-- PA.gov: src y=217→255, dst y=275→305 -->
-              <path d="M163,217 C272,217 272,275 380,275 L380,305 C272,305 272,255 163,255 Z" fill="#1A8FA0" opacity="0.28"/>
-              <!-- SAS Portal: src y=260→295, dst y=305→330 -->
-              <path d="M163,260 C272,260 272,305 380,305 L380,330 C272,330 272,295 163,295 Z" fill="#5BA8B5" opacity="0.28"/>
-              <!-- Bing: src y=300→324, dst y=330→337 -->
-              <path d="M163,300 C272,300 272,330 380,330 L380,337 C272,337 272,324 163,324 Z" fill="#A8D5DC" opacity="0.28"/>
-              <!-- Other: src y=329→365, dst y=337→365 -->
-              <path d="M163,329 C272,329 272,337 380,337 L380,365 C272,365 272,365 163,365 Z" fill="#9CA3AF" opacity="0.28"/>
+              <!-- Direct: src y=10→107, dst y=10→151 -->
+              <path d="M163,10  C272,10  272,10  380,10  L380,151 C272,151 272,107 163,107 Z" fill="#0A5562" opacity="0.28"/>
+              <!-- Google: src y=115→203, dst y=151→275 -->
+              <path d="M163,115 C272,115 272,151 380,151 L380,275 C272,275 272,203 163,203 Z" fill="#0D6E7A" opacity="0.28"/>
+              <!-- PA.gov: src y=211→248, dst y=275→305 -->
+              <path d="M163,211 C272,211 272,275 380,275 L380,305 C272,305 272,248 163,248 Z" fill="#1A8FA0" opacity="0.28"/>
+              <!-- SAS Portal: src y=256→290, dst y=305→330 -->
+              <path d="M163,256 C272,256 272,305 380,305 L380,330 C272,330 272,290 163,290 Z" fill="#5BA8B5" opacity="0.28"/>
+              <!-- Bing: src y=298→322, dst y=330→337 -->
+              <path d="M163,298 C272,298 272,330 380,330 L380,337 C272,337 272,322 163,322 Z" fill="#A8D5DC" opacity="0.28"/>
+              <!-- Other: src y=330→365, dst y=337→365 -->
+              <path d="M163,330 C272,330 272,337 380,337 L380,365 C272,365 272,365 163,365 Z" fill="#9CA3AF" opacity="0.28"/>
 
-              <!-- ── Destination node (x=380, width=15, y=10→365 proportional) ── -->
+              <!-- ── Destination node (x=380, width=15, y=10→365) ── -->
               <rect x="380" y="10"  width="15" height="355" rx="2" fill="#0A5562"/>
 
               <!-- ── Destination label ── -->
@@ -810,10 +810,10 @@ html, body {
       <div class="essa-layout">
         <div class="essa-donut-wrap"><canvas id="c-essa"></canvas></div>
         <div class="essa-legend">
-          <div class="essa-li"><div class="essa-dot" style="background:#2E74B5"></div>T1 &nbsp;Strong Evidence</div>
-          <div class="essa-li"><div class="essa-dot" style="background:#E07B20"></div>T2 &nbsp;Moderate Evidence</div>
-          <div class="essa-li"><div class="essa-dot" style="background:#6B7280"></div>T3 &nbsp;Promising Evidence</div>
-          <div class="essa-li"><div class="essa-dot" style="background:#D4A017"></div>T4 &nbsp;Demonstrates a Rationale</div>
+          <div class="essa-li"><div class="essa-dot" style="background:var(--erc-deep)"></div>T1 &nbsp;Strong Evidence</div>
+          <div class="essa-li"><div class="essa-dot" style="background:var(--erc-dark)"></div>T2 &nbsp;Moderate Evidence</div>
+          <div class="essa-li"><div class="essa-dot" style="background:var(--erc-teal)"></div>T3 &nbsp;Promising Evidence</div>
+          <div class="essa-li"><div class="essa-dot" style="background:#A8D5DC"></div>T4 &nbsp;Demonstrates a Rationale</div>
         </div>
       </div>
       <div class="note">Distribution approximate — visual inspection of source chart.</div>
@@ -976,7 +976,7 @@ function chartExternalTooltip(context) {
     type: 'doughnut',
     data: {
       labels: ['T1 Strong','T2 Moderate','T3 Promising','T4 Rationale'],
-      datasets: [{ data:[15,7,31,47], backgroundColor:['#2E74B5','#E07B20','#6B7280','#D4A017'], borderWidth:2, borderColor:'#F2FAFB' }]
+      datasets: [{ data:[15,7,31,47], backgroundColor:['#0A5562','#0D6E7A','#1A8FA0','#A8D5DC'], borderWidth:2, borderColor:'#F2FAFB' }]
     },
     options: {
       responsive:true, maintainAspectRatio:true,
@@ -986,7 +986,7 @@ function chartExternalTooltip(context) {
         tooltip:{
           enabled: false,
           external: chartExternalTooltip,
-          callbacks:{label:c=>`${c.label}`}
+          callbacks:{title:()=>'', label:c=>`${c.label}`}
         }
       }
     }
