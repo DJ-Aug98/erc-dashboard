@@ -804,16 +804,16 @@ html, body {
       <div style="display:flex;align-items:center;gap:6px;margin-bottom:clamp(5px,0.5vh,7px);">
         <div class="sb-lbl" style="margin-bottom:0;">ESSA Evidence Tiers</div>
         <span class="info-icon" style="flex-shrink:0;">i
-          <span class="info-tooltip">Tier distribution of the 594 ERC strategies by ESSA evidence level. T1 Strong (~12%), T2 Moderate (~8%), T3 Promising (~25%), T4 Demonstrates a Rationale (~55%). Distribution is approximate — based on visual inspection of the database stats chart; exact tier counts not available in source data.</span>
+          <span class="info-tooltip">Tier distribution of the 594 ERC strategies by ESSA evidence level: T1 Strong, T2 Moderate, T3 Promising, T4 Demonstrates a Rationale. Distribution is approximate — based on visual inspection of the database stats chart; exact tier counts not available in source data.</span>
         </span>
       </div>
       <div class="essa-layout">
         <div class="essa-donut-wrap"><canvas id="c-essa"></canvas></div>
         <div class="essa-legend">
-          <div class="essa-li"><div class="essa-dot" style="background:var(--erc-deep)"></div>T1 &nbsp;Strong Evidence</div>
-          <div class="essa-li"><div class="essa-dot" style="background:var(--erc-dark)"></div>T2 &nbsp;Moderate Evidence</div>
-          <div class="essa-li"><div class="essa-dot" style="background:var(--erc-teal)"></div>T3 &nbsp;Promising Evidence</div>
-          <div class="essa-li"><div class="essa-dot" style="background:#A8D5DC"></div>T4 &nbsp;Demonstrates a Rationale</div>
+          <div class="essa-li"><div class="essa-dot" style="background:#2E74B5"></div>T1 &nbsp;Strong Evidence</div>
+          <div class="essa-li"><div class="essa-dot" style="background:#E07B20"></div>T2 &nbsp;Moderate Evidence</div>
+          <div class="essa-li"><div class="essa-dot" style="background:#6B7280"></div>T3 &nbsp;Promising Evidence</div>
+          <div class="essa-li"><div class="essa-dot" style="background:#D4A017"></div>T4 &nbsp;Demonstrates a Rationale</div>
         </div>
       </div>
       <div class="note">Distribution approximate — visual inspection of source chart.</div>
@@ -976,7 +976,7 @@ function chartExternalTooltip(context) {
     type: 'doughnut',
     data: {
       labels: ['T1 Strong','T2 Moderate','T3 Promising','T4 Rationale'],
-      datasets: [{ data:[12,8,25,55], backgroundColor:['#0A5562','#0D6E7A','#1A8FA0','#A8D5DC'], borderWidth:2, borderColor:'#F2FAFB' }]
+      datasets: [{ data:[15,7,31,47], backgroundColor:['#2E74B5','#E07B20','#6B7280','#D4A017'], borderWidth:2, borderColor:'#F2FAFB' }]
     },
     options: {
       responsive:true, maintainAspectRatio:true,
@@ -986,7 +986,7 @@ function chartExternalTooltip(context) {
         tooltip:{
           enabled: false,
           external: chartExternalTooltip,
-          callbacks:{label:c=>`${c.label} (~${c.raw}% — approximate)`}
+          callbacks:{label:c=>`${c.label}`}
         }
       }
     }
