@@ -117,7 +117,29 @@ html, body {
   display: grid;
   grid-template-rows: 2fr 2fr auto;
   min-height: 0; overflow: hidden;
+  transition: grid-template-rows 0.3s ease;
 }
+.main.reach-collapsed                        { grid-template-rows: auto 1fr auto; }
+.main.engagement-collapsed                   { grid-template-rows: 1fr auto auto; }
+.main.reach-collapsed.engagement-collapsed   { grid-template-rows: auto auto auto; }
+
+/* Collapse toggle button on section strips */
+.strip-toggle {
+  margin-left: auto;
+  background: rgba(255,255,255,0.12);
+  border: 1px solid rgba(255,255,255,0.22);
+  color: white; border-radius: 3px; cursor: pointer;
+  font-size: 15px; font-weight: 700;
+  width: 18px; height: 18px;
+  display: flex; align-items: center; justify-content: center;
+  line-height: 1; padding: 0; flex-shrink: 0;
+  transition: background 0.15s;
+}
+.strip-toggle:hover { background: rgba(255,255,255,0.25); }
+
+/* Hide panels when collapsed */
+.reach.collapsed      .reach-panels      { display: none; }
+.engagement.collapsed .engagement-panels { display: none; }
 
 /* Section strip */
 .section-strip {
@@ -489,6 +511,7 @@ html, body {
         <h2>Reach</h2>
         <span class="sub">Who comes to the site, from where, and how</span>
         <span class="strip-pill">Jan–Dec 2025</span>
+        <button class="strip-toggle" data-section="reach" title="Collapse Reach">−</button>
       </div>
       <div class="reach-panels">
 
@@ -671,6 +694,7 @@ html, body {
         <h2>Engagement</h2>
         <span class="sub">Depth of interaction, session quality, and content popularity</span>
         <span class="strip-pill">Jan–Dec 2025</span>
+        <button class="strip-toggle" data-section="engagement" title="Collapse Engagement">−</button>
       </div>
       <div class="engagement-panels">
 
@@ -831,6 +855,22 @@ html, body {
 </div><!-- /page -->
 
 <script>
+// ── Reach / Engagement collapse toggles ───────────────────────────
+document.querySelectorAll('.strip-toggle').forEach(function(btn) {
+  btn.addEventListener('click', function() {
+    const name    = this.dataset.section;            // 'reach' or 'engagement'
+    const section = document.querySelector('.' + name);
+    const main    = document.querySelector('.main');
+    const collapsed = section.classList.toggle('collapsed');
+    main.classList.toggle(name + '-collapsed', collapsed);
+    this.textContent = collapsed ? '+' : '−';
+    this.title = (collapsed ? 'Expand ' : 'Collapse ') + name.charAt(0).toUpperCase() + name.slice(1);
+    setTimeout(function() {
+      Object.values(Chart.instances).forEach(function(c) { c.resize(); });
+    }, 320);
+  });
+});
+
 // ── Sidebar expand / collapse ──────────────────────────────────────
 document.getElementById('sb-tab').addEventListener('click', function() {
   document.getElementById('body').classList.add('sb-expanded');
