@@ -1,0 +1,1069 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>ERC Strategic Planning Dashboard | March 2026</title>
+<link href="https://fonts.googleapis.com/css2?family=Raleway:wght@400;600;700;900&family=Open+Sans:wght@300;400;600;700&display=swap" rel="stylesheet">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.min.js"></script>
+<style>
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+:root {
+  --erc-teal:  #1A8FA0;
+  --erc-dark:  #0D6E7A;
+  --erc-deep:  #0A5562;
+  --erc-lt:    #E4F3F5;
+  --erc-pale:  #F2FAFB;
+  --cciu-burg: #8a1e41;
+  --gray:      #6B7280;
+  --gray-lt:   #9CA3AF;
+  --gray-pale: #F0F4F6;
+  --border:    #C8E4E8;
+  --white:     #FFFFFF;
+  --text:      #1A2B35;
+  --text-sm:   #4A5568;
+}
+
+html, body {
+  width: 100vw; height: 100vh;
+  overflow: hidden;
+  background: #D8E4E7;
+  font-family: 'Open Sans', sans-serif;
+  color: var(--text);
+}
+
+/* ════════ PAGE SHELL ════════ */
+.page {
+  width: 100vw; height: 100vh;
+  display: grid;
+  grid-template-rows: auto auto 1fr;
+  overflow: hidden;
+}
+
+/* ════════ HEADER ════════ */
+.hdr {
+  background: var(--erc-deep);
+  display: grid;
+  grid-template-columns: 210px 1fr 160px;
+  align-items: center;
+  padding: clamp(4px,0.5vh,8px) 20px;
+  border-bottom: 3px solid var(--erc-teal);
+  gap: 16px;
+}
+.hdr-title { text-align: center; }
+.hdr-title h1 {
+  font-family: 'Raleway', sans-serif;
+  font-size: clamp(13px,1.3vw,18px);
+  font-weight: 700; color: white; letter-spacing: 0.02em;
+}
+.hdr-title p {
+  font-size: clamp(8px,0.7vw,10px);
+  color: rgba(255,255,255,0.55); letter-spacing: 0.08em;
+  text-transform: uppercase; margin-top: 2px;
+}
+.logo-cciu { display: flex; justify-content: flex-end; }
+
+/* ════════ STAT BAR ════════ */
+.stat-bar {
+  background: var(--erc-deep);
+  display: flex;
+  border-bottom: 2px solid var(--border);
+  flex-shrink: 0;
+}
+.stat-bar-item {
+  flex: 1;
+  padding: clamp(4px,0.5vh,7px) 10px;
+  border-right: 1px solid rgba(255,255,255,0.1);
+  display: flex; flex-direction: column; justify-content: center;
+}
+.stat-bar-item:last-child { border-right: none; }
+.sbv { font-family:'Raleway',sans-serif; font-size:clamp(15px,1.5vw,21px); font-weight:900; color:white; line-height:1; }
+.sbl { font-size:clamp(7px,0.65vw,9px); color:rgba(255,255,255,0.65); margin-top:2px; letter-spacing:0.04em; text-transform:uppercase; }
+.sbd { font-size:clamp(7px,0.6vw,9px); color:rgba(255,255,255,0.4); margin-top:1px; }
+/* .stat-bar-item.hl — highlight removed for uniform color */
+
+/* ════════ BODY ════════ */
+.body {
+  display: grid;
+  grid-template-columns: 1fr 0px;
+  min-height: 0; overflow: hidden;
+  transition: grid-template-columns 0.4s ease;
+  position: relative;
+}
+.body.sb-expanded {
+  grid-template-columns: 1fr clamp(280px,30vw,380px);
+}
+
+/* Evidence Base tab (visible when sidebar collapsed) */
+#sb-tab {
+  position: absolute; right: 0; top: 50%;
+  transform: translateY(-50%);
+  background: var(--erc-deep); color: white;
+  border: none; border-left: 2px solid var(--erc-teal);
+  border-radius: 6px 0 0 6px;
+  padding: 12px 5px; cursor: pointer;
+  writing-mode: vertical-rl;
+  font-size: clamp(8px,0.72vw,10px); font-family: 'Raleway', sans-serif;
+  letter-spacing: 0.12em; font-weight: 700;
+  z-index: 10;
+  transition: background 0.2s;
+}
+#sb-tab:hover { background: var(--erc-dark); }
+.body.sb-expanded #sb-tab { display: none; }
+
+/* ════════ MAIN ════════ */
+.main {
+  display: grid;
+  grid-template-rows: 2fr 2fr auto;
+  min-height: 0; overflow: hidden;
+}
+
+/* Section strip */
+.section-strip {
+  background: var(--erc-dark);
+  padding: clamp(3px,0.4vh,5px) 14px;
+  display: flex; align-items: center; gap: 10px;
+  flex-shrink: 0;
+}
+.section-strip h2 {
+  font-family:'Raleway',sans-serif; font-size:clamp(9px,0.85vw,11px);
+  font-weight:700; color:white; letter-spacing:0.15em; text-transform:uppercase;
+}
+.section-strip .sub { font-size:clamp(8px,0.65vw,9px); color:rgba(255,255,255,0.45); }
+.strip-pill {
+  font-size:clamp(7px,0.6vw,9px); background:rgba(255,255,255,0.12);
+  color:rgba(255,255,255,0.7); padding:1px 7px; border-radius:10px; letter-spacing:0.05em;
+}
+
+/* ════════ REACH ════════ */
+.reach {
+  display: flex; flex-direction: column;
+  border-bottom: 2px solid var(--border);
+  min-height: 0; background: var(--erc-pale);
+}
+.reach-panels {
+  flex: 1; min-height: 0;
+  display: grid;
+  grid-template-columns: 1.1fr 1fr 0.85fr;
+  overflow: hidden;
+}
+
+/* ════════ ENGAGEMENT ════════ */
+.engagement {
+  display: flex; flex-direction: column;
+  border-bottom: 2px solid var(--border);
+  min-height: 0;
+}
+.engagement-panels {
+  flex: 1; min-height: 0;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  overflow: hidden;
+}
+
+/* ════════ IMPACT ════════ */
+.impact {
+  background: var(--erc-deep);
+  padding: clamp(5px,0.6vh,8px) 16px;
+  display: flex; align-items: center; gap: 18px;
+  flex-shrink: 0; border-top: 2px solid rgba(255,255,255,0.08);
+}
+.impact-label {
+  font-family:'Raleway',sans-serif; font-size:clamp(8px,0.75vw,10px);
+  font-weight:700; color:rgba(255,255,255,0.4); letter-spacing:0.2em; text-transform:uppercase;
+  flex-shrink:0; padding-right:18px; border-right:1px solid rgba(255,255,255,0.12);
+}
+.impact-body { flex:1; font-size:clamp(9px,0.85vw,11px); color:rgba(255,255,255,0.7); line-height:1.55; }
+.impact-body strong { color:rgba(255,255,255,0.9); }
+.impact-stats {
+  display:flex; gap:clamp(12px,1.5vw,22px); flex-shrink:0;
+  padding-left:18px; border-left:1px solid rgba(255,255,255,0.12);
+}
+.impact-stat { text-align:center; }
+.isv { font-family:'Raleway',sans-serif; font-size:clamp(16px,1.6vw,22px); font-weight:900; color:white; line-height:1; }
+.isl { font-size:clamp(7px,0.65vw,9px); color:rgba(255,255,255,0.45); margin-top:2px; text-transform:uppercase; letter-spacing:0.06em; }
+
+/* ════════ PANEL ════════ */
+.panel {
+  border-right: 1px solid var(--border);
+  padding: clamp(7px,0.8vh,11px) clamp(9px,0.9vw,13px);
+  display: flex; flex-direction: column;
+  overflow: hidden; min-height: 0;
+}
+.panel:last-child { border-right: none; }
+
+.ph { display:flex; align-items:center; gap:6px; margin-bottom:clamp(5px,0.5vh,8px); flex-shrink:0; }
+.ph::before { content:''; display:block; width:14px; height:2px; background:var(--erc-teal); border-radius:2px; flex-shrink:0; }
+.ph-label {
+  font-size:clamp(8px,0.75vw,10px); font-weight:700; letter-spacing:0.13em;
+  text-transform:uppercase; color:var(--erc-teal); font-family:'Raleway',sans-serif;
+}
+.note { font-size:clamp(7px,0.6vw,9px); color:var(--gray-lt); line-height:1.4; margin-top:5px; flex-shrink:0; }
+
+/* ── Info icon tooltip ── */
+.info-icon-wrap { margin-top:5px; flex-shrink:0; }
+.info-icon {
+  display: inline-flex; align-items: center; justify-content: center;
+  width: 14px; height: 14px; border-radius: 50%;
+  background: var(--erc-lt); border: 1px solid var(--erc-teal);
+  color: var(--erc-dark); font-size: 9px; font-weight: 700;
+  font-style: normal; cursor: default;
+  position: relative;
+  font-family: Georgia, serif;
+  line-height: 1;
+}
+.info-icon .info-tooltip {
+  display: none;
+  position: absolute;
+  bottom: calc(100% + 6px);
+  left: 0;
+  width: clamp(180px, 18vw, 240px);
+  background: var(--erc-deep);
+  color: rgba(255,255,255,0.85);
+  font-size: clamp(8px, 0.7vw, 10px);
+  font-family: 'Open Sans', sans-serif;
+  font-weight: 400;
+  line-height: 1.5;
+  padding: 7px 9px;
+  border-radius: 5px;
+  box-shadow: 0 3px 10px rgba(0,0,0,0.2);
+  z-index: 100;
+  pointer-events: none;
+}
+.info-icon .info-tooltip::after {
+  content: '';
+  position: absolute;
+  top: 100%; left: 4px;
+  border: 5px solid transparent;
+  border-top-color: var(--erc-deep);
+}
+.info-icon:hover .info-tooltip { display: block; }
+
+/* All inline tooltips hidden — replaced by #global-tip via JS */
+.info-tooltip { display: none !important; }
+
+/* Global fixed tooltip (not clipped by any overflow:hidden parent) */
+#global-tip {
+  display: none;
+  position: fixed;
+  z-index: 9999;
+  width: 260px;
+  background: var(--erc-deep);
+  color: rgba(255,255,255,0.85);
+  font-size: clamp(8px,0.7vw,10px);
+  font-family: 'Open Sans', sans-serif;
+  font-weight: 400;
+  line-height: 1.5;
+  padding: 7px 9px;
+  border-radius: 5px;
+  box-shadow: 0 3px 12px rgba(0,0,0,0.28);
+  pointer-events: none;
+}
+
+/* ════════ GEOGRAPHY ════════ */
+.geo-layout { display:flex; flex-direction:column; flex:1; min-height:0; gap:5px; }
+.geo-top { display:flex; gap:10px; align-items:center; flex-shrink:0; }
+.geo-donut-wrap {
+  position:relative;
+  width:clamp(90px,9vw,120px); height:clamp(90px,9vw,120px);
+  flex-shrink:0;
+}
+.geo-legend { display:flex; flex-direction:column; gap:7px; }
+.geo-legend-item { display:flex; align-items:center; gap:5px; }
+.geo-dot { width:9px; height:9px; border-radius:50%; flex-shrink:0; }
+.geo-pct { font-family:'Raleway',sans-serif; font-weight:900; font-size:clamp(16px,1.5vw,20px); }
+.geo-name { font-size:clamp(8px,0.75vw,10px); color:var(--text-sm); }
+
+.cities-lbl { font-size:clamp(7px,0.65vw,9px); font-weight:700; letter-spacing:0.08em; text-transform:uppercase; color:var(--gray); flex-shrink:0; }
+.cities-list { flex:1; min-height:0; display:flex; flex-direction:column; justify-content:space-between; }
+.city-row { display:flex; align-items:center; gap:6px; padding:clamp(2px,0.22vh,3px) 0; border-bottom:1px solid var(--erc-lt); font-size:clamp(9px,0.85vw,11px); }
+.city-row:last-child { border-bottom:none; }
+.city-rank { width:14px; height:14px; border-radius:50%; background:var(--erc-lt); color:var(--erc-dark); font-size:clamp(7px,0.62vw,8px); font-weight:700; display:flex; align-items:center; justify-content:center; flex-shrink:0; }
+.city-name { flex:1; color:var(--text-sm); overflow:hidden; white-space:nowrap; text-overflow:ellipsis; }
+.city-bar-wrap { width:clamp(28px,2.8vw,40px); height:5px; background:var(--erc-lt); border-radius:3px; overflow:hidden; flex-shrink:0; }
+.city-bar { height:100%; background:var(--erc-teal); border-radius:3px; }
+.city-val { font-weight:700; color:var(--erc-dark); font-family:'Raleway',sans-serif; font-size:clamp(9px,0.85vw,11px); width:clamp(26px,2.6vw,34px); text-align:right; flex-shrink:0; }
+
+/* ════════ HOW USERS ARRIVE — SANKEY ════════ */
+.sankey-wrap { flex:1; min-height:0; display:flex; align-items:stretch; }
+.sankey-wrap svg { width:100%; height:100%; display:block; overflow:visible; }
+.arrival-ai-callout {
+  background:var(--erc-lt); border-left:3px solid var(--erc-teal);
+  padding:5px 8px; border-radius:0 4px 4px 0;
+  font-size:clamp(8px,0.72vw,10px); color:var(--text-sm);
+  line-height:1.4; flex-shrink:0; margin-top:6px;
+}
+.arrival-ai-callout strong { color:var(--erc-dark); }
+
+/* ════════ WHO'S USING ════════ */
+.prop-bar-wrap {
+  height: clamp(44px,5.5vh,68px);
+  background: var(--erc-lt); border-radius:4px; overflow:hidden;
+  display: flex; flex-shrink:0;
+  margin-bottom: clamp(5px,0.5vh,8px);
+}
+.prop-bar-reg { background:var(--erc-dark); width:6.8%; }
+.prop-bar-anon { background:var(--gray-lt); flex:1; }
+
+.bar-label-row { display:flex; justify-content:space-between; font-size:clamp(8px,0.72vw,10px); color:var(--gray); margin-top:4px; margin-bottom:clamp(5px,0.6vh,8px); flex-shrink:0; }
+.bar-label-row .blr-reg { color:var(--erc-dark); font-weight:700; }
+.bar-label-row .blr-anon { color:var(--gray); }
+
+.user-split {
+  display:grid; grid-template-columns:1fr 1fr;
+  flex:1; min-height:0;
+  gap:clamp(5px,0.6vw,8px); flex:1; min-height:0;
+}
+.user-block {
+  border:1px solid var(--border); border-radius:6px;
+  display:flex; flex-direction:column; justify-content:center;
+  padding:clamp(7px,0.7vh,10px) clamp(8px,0.8vw,11px);
+  display:flex; flex-direction:column; overflow:hidden;
+}
+.user-block.registered { border-color:var(--erc-teal); background:var(--erc-pale); }
+.user-block.anonymous  { border-color:var(--border); background:var(--gray-pale); }
+.ub-type { font-size:clamp(7px,0.65vw,9px); font-weight:700; letter-spacing:0.1em; text-transform:uppercase; margin-bottom:2px; }
+.registered .ub-type { color:var(--erc-dark); }
+.anonymous  .ub-type { color:var(--gray); }
+.ub-big { font-family:'Raleway',sans-serif; font-size:clamp(32px,3.2vw,48px); font-weight:900; line-height:1; margin-bottom:2px; }
+.registered .ub-big { color:var(--erc-dark); }
+.anonymous  .ub-big { color:var(--gray); }
+.ub-pct { font-size:clamp(11px,1.05vw,14px); margin-bottom:8px; }
+.registered .ub-pct { color:var(--erc-teal); }
+.anonymous  .ub-pct { color:var(--gray-lt); }
+.ub-metric { display:flex; justify-content:space-between; align-items:baseline; padding:clamp(3px,0.4vh,6px) 0; border-bottom:1px solid var(--border); font-size:clamp(9px,0.85vw,11px); }
+.ub-metric:last-child { border-bottom:none; }
+.ub-metric .umk { color:var(--gray); }
+.ub-metric .umv { font-weight:700; }
+.registered .ub-metric .umv { color:var(--erc-dark); }
+.anonymous  .ub-metric .umv { color:var(--gray); }
+.anon-note { font-size:clamp(9px,0.85vw,11px); color:var(--gray); line-height:1.5; margin-top:8px; }
+
+/* ════════ FUNNEL ════════ */
+.funnel-wrap {
+  flex:1; min-height:0;
+  display:flex; flex-direction:column;
+}
+.funnel-wrap svg { flex:1; min-height:0; width:100%; display:block; overflow:visible; }
+
+/* ════════ CHART WRAP (shared) ════════ */
+.chart-wrap { flex:1; min-height:0; position:relative; }
+.chart-wrap canvas { width:100%!important; height:100%!important; }
+
+/* ════════ ENGAGEMENT RIGHT: SESSION QUALITY ════════ */
+.sig-cards-wrap {
+  flex:1; min-height:0;
+  display:flex; flex-direction:column;
+  gap:clamp(4px,0.5vh,7px);
+}
+.sig-card {
+  flex:1;
+  background:var(--erc-lt); border-radius:6px;
+  border-left:3px solid var(--erc-teal);
+  padding:clamp(5px,0.55vh,8px) clamp(10px,1vw,14px);
+  display:flex; flex-direction:row; align-items:center; gap:clamp(8px,0.8vw,12px);
+}
+.sig-card-v {
+  font-family:'Raleway',sans-serif; font-size:clamp(16px,1.6vw,22px);
+  font-weight:900; color:var(--erc-dark); line-height:1;
+  flex-shrink:0; min-width:clamp(52px,5.5vw,80px);
+}
+.sig-card-right { display:flex; flex-direction:column; justify-content:center; min-width:0; }
+.sig-card-l { font-size:clamp(9px,0.82vw,11px); color:var(--text-sm); line-height:1.25; }
+.sig-card-d { font-size:clamp(8px,0.7vw,10px); color:var(--gray); margin-top:2px; font-weight:600; }
+.sig-card-src { font-size:clamp(7px,0.58vw,8px); color:var(--gray-lt); margin-top:1px; font-style:italic; }
+
+/* Page tiles */
+.page-tiles-lbl { font-size:clamp(7px,0.65vw,9px); font-weight:700; letter-spacing:0.08em; text-transform:uppercase; color:var(--gray); margin-bottom:clamp(4px,0.4vh,6px); flex-shrink:0; }
+.page-tiles {
+  display:grid;
+  grid-template-columns:repeat(3,1fr);
+  grid-template-rows:repeat(2,1fr);
+  gap:clamp(4px,0.5vw,7px);
+  flex:1; min-height:0;
+}
+.page-tile {
+  border-radius:5px; border:1px solid var(--border);
+  padding:clamp(5px,0.5vh,8px) clamp(6px,0.6vw,9px);
+  display:flex; flex-direction:column; justify-content:flex-end;
+  overflow:hidden; background:var(--erc-lt);
+}
+.page-tile.hero { grid-column:span 2; background:#dff0f3; border-color:var(--erc-teal); }
+.page-tile.outlier { background:#fef9e7; border-color:#d4a017; }
+.pt-views { font-family:'Raleway',sans-serif; font-size:clamp(13px,1.2vw,17px); font-weight:900; color:var(--erc-dark); line-height:1; }
+.pt-path { font-size:clamp(7px,0.65vw,9px); color:var(--text-sm); margin-top:2px; white-space:nowrap; overflow:hidden; text-overflow:ellipsis; }
+.pt-delta { font-size:clamp(7px,0.62vw,8px); color:var(--gray); margin-top:1px; }
+.page-tile.outlier .pt-delta { color:#9a7400; font-weight:700; }
+
+/* ════════ SIDEBAR ════════ */
+.sidebar {
+  background:var(--erc-pale);
+  border-left:2px solid var(--border);
+  display:flex; flex-direction:column;
+  overflow:hidden; min-height:0;
+}
+.sidebar-hdr {
+  background:var(--erc-deep);
+  padding:clamp(5px,0.55vh,8px) 12px;
+  flex-shrink:0;
+  display:flex; align-items:center; justify-content:space-between;
+}
+.sidebar-hdr-text h2 { font-family:'Raleway',sans-serif; font-size:clamp(9px,0.85vw,11px); font-weight:700; color:white; letter-spacing:0.14em; text-transform:uppercase; }
+.sidebar-hdr-text p { font-size:clamp(7px,0.65vw,9px); color:rgba(255,255,255,0.45); margin-top:1px; }
+
+#sb-toggle {
+  background:rgba(255,255,255,0.12); border:1px solid rgba(255,255,255,0.2);
+  color:white; border-radius:4px; cursor:pointer;
+  font-size:clamp(10px,0.9vw,13px); padding:2px 8px;
+  transition:background 0.2s; flex-shrink:0; line-height:1.4;
+}
+#sb-toggle:hover { background:rgba(255,255,255,0.22); }
+
+.sb-block { padding:clamp(6px,0.65vh,10px) clamp(8px,0.8vw,12px); border-bottom:1px solid var(--border); flex-shrink:0; }
+.sb-block.grow { flex:1; min-height:0; display:flex; flex-direction:column; overflow:hidden; }
+.sb-lbl { font-size:clamp(7px,0.65vw,9px); font-weight:700; letter-spacing:0.12em; text-transform:uppercase; color:var(--erc-teal); font-family:'Raleway',sans-serif; margin-bottom:clamp(5px,0.5vh,7px); flex-shrink:0; }
+
+/* DB compare */
+.comp-row { display:flex; align-items:center; gap:6px; margin-bottom:clamp(4px,0.4vh,6px); }
+.comp-row:last-child { margin-bottom:0; }
+.ck { font-size:clamp(8px,0.72vw,10px); color:var(--text-sm); flex:0 0 clamp(72px,7vw,90px); line-height:1.3; }
+.comp-bar-wrap { flex:1; height:clamp(10px,1vh,13px); background:var(--erc-lt); border-radius:3px; overflow:hidden; }
+.comp-bar { height:100%; border-radius:3px; }
+.cv2 { font-weight:700; color:var(--erc-dark); font-family:'Raleway',sans-serif; font-size:clamp(9px,0.82vw,11px); width:26px; text-align:right; }
+
+/* ESSA donut */
+.essa-layout { display:flex; align-items:center; gap:8px; }
+.essa-donut-wrap { position:relative; flex-shrink:0; width:clamp(68px,6.5vw,85px); height:clamp(68px,6.5vw,85px); }
+.essa-legend { display:flex; flex-direction:column; gap:clamp(3px,0.3vh,5px); flex:1; }
+.essa-li { display:flex; align-items:center; gap:5px; font-size:clamp(8px,0.72vw,10px); color:var(--text-sm); }
+.essa-dot { width:8px; height:8px; border-radius:2px; flex-shrink:0; }
+
+/* Growth chart */
+.growth-chart-wrap { flex:1; min-height:0; position:relative; margin-top:clamp(3px,0.3vh,5px); }
+</style>
+</head>
+<body>
+<div class="page">
+
+<!-- ══ HEADER ══ -->
+<header class="hdr">
+  <div>
+    <img src="https://res.cloudinary.com/hq7acirgo/image/upload/ERCLogo_Official-o.png"
+         alt="Pennsylvania Evidence Resource Center"
+         style="height:clamp(36px,4vh,48px);width:auto;max-width:220px;object-fit:contain;display:block;background:white;border-radius:5px;padding:4px 10px;">
+  </div>
+  <div class="hdr-title">
+    <h1>Strategic Planning Dashboard</h1>
+    <p>Phase 1 Data Overview &nbsp;·&nbsp; March 2026 &nbsp;·&nbsp; Internal Use Only</p>
+  </div>
+  <div class="logo-cciu">
+    <img src="https://resources.finalsite.net/images/f_auto,q_auto/v1718650769/cciuorg/agonjd1gxja2bnb4p2wu/CCIUPrimaryLogo.png"
+         alt="Chester County Intermediate Unit"
+         style="height:clamp(36px,4vh,48px);width:auto;max-width:140px;object-fit:contain;display:block;background:white;border-radius:5px;padding:4px 10px;">
+  </div>
+</header>
+
+<!-- ══ STAT BAR ══ -->
+<div class="stat-bar">
+  <div class="stat-bar-item hl"><div class="sbv">594</div><div class="sbl">Strategies</div><div class="sbd">as of Dec 2025</div></div>
+  <div class="stat-bar-item"><div class="sbv">750</div><div class="sbl">Studies</div><div class="sbd">evidence base</div></div>
+  <div class="stat-bar-item"><div class="sbv">2,284</div><div class="sbl">Outcomes</div><div class="sbd">across 137 domains</div></div>
+  <div class="stat-bar-item hl"><div class="sbv">8,533</div><div class="sbl">Annual Visitors</div><div class="sbd">+10.5% vs. prior yr</div></div>
+  <div class="stat-bar-item"><div class="sbv">44%</div><div class="sbl">Out-of-State</div><div class="sbd">of all sessions</div></div>
+  <div class="stat-bar-item hl"><div class="sbv">581</div><div class="sbl">Registered Users</div><div class="sbd">6.8% of all visitors</div></div>
+  <div class="stat-bar-item"><div class="sbv">259</div><div class="sbl">Strategies Pinned</div><div class="sbd">691 total pins</div></div>
+  <div class="stat-bar-item"><div class="sbv">2m 21s</div><div class="sbl">Avg. Session Time</div><div class="sbd">-24.8% vs. prior yr</div></div>
+</div>
+
+<!-- ══ BODY ══ -->
+<div class="body" id="body">
+
+  <!-- ── MAIN ── -->
+  <div class="main">
+
+    <!-- ▸ REACH -->
+    <div class="reach">
+      <div class="section-strip">
+        <h2>Reach</h2>
+        <span class="sub">Who comes to the site, from where, and how</span>
+        <span class="strip-pill">Jan–Dec 2025</span>
+      </div>
+      <div class="reach-panels">
+
+        <!-- Visitor Geography -->
+        <div class="panel">
+          <div class="ph"><span class="ph-label">Visitor Geography</span></div>
+          <div class="geo-layout">
+            <div class="geo-top">
+              <div class="geo-donut-wrap"><canvas id="c-geo"></canvas></div>
+              <div class="geo-legend">
+                <div class="geo-legend-item">
+                  <div class="geo-dot" style="background:var(--erc-deep)"></div>
+                  <div><div class="geo-pct" style="color:var(--erc-deep)">56%</div><div class="geo-name">Pennsylvania</div></div>
+                </div>
+                <div class="geo-legend-item">
+                  <div class="geo-dot" style="background:var(--erc-teal)"></div>
+                  <div><div class="geo-pct" style="color:var(--erc-teal)">44%</div><div class="geo-name">Out of State</div></div>
+                </div>
+              </div>
+            </div>
+            <div class="cities-lbl">Top Cities — Active Users</div>
+            <div class="cities-list">
+              <div class="city-row">
+                <span class="city-rank">1</span><span class="city-name">Not Set (VPN)</span>
+                <div class="city-bar-wrap"><div class="city-bar" style="width:100%"></div></div>
+                <span class="city-val">1,226</span>
+              </div>
+              <div class="city-row">
+                <span class="city-rank">2</span><span class="city-name">Philadelphia, PA</span>
+                <div class="city-bar-wrap"><div class="city-bar" style="width:32.1%"></div></div>
+                <span class="city-val">394</span>
+              </div>
+              <div class="city-row">
+                <span class="city-rank">3</span><span class="city-name">Pittsburgh, PA</span>
+                <div class="city-bar-wrap"><div class="city-bar" style="width:18.8%"></div></div>
+                <span class="city-val">230</span>
+              </div>
+              <div class="city-row">
+                <span class="city-rank">4</span><span class="city-name">Ashburn, VA</span>
+                <div class="city-bar-wrap"><div class="city-bar" style="width:18.5%"></div></div>
+                <span class="city-val">227</span>
+              </div>
+              <div class="city-row">
+                <span class="city-rank">5</span><span class="city-name">New York, NY</span>
+                <div class="city-bar-wrap"><div class="city-bar" style="width:17.5%"></div></div>
+                <span class="city-val">214</span>
+              </div>
+              <div class="city-row">
+                <span class="city-rank">6</span><span class="city-name">Harrisburg, PA</span>
+                <div class="city-bar-wrap"><div class="city-bar" style="width:16.8%"></div></div>
+                <span class="city-val">206</span>
+              </div>
+              <div class="city-row">
+                <span class="city-rank">7</span><span class="city-name">Erie, PA</span>
+                <div class="city-bar-wrap"><div class="city-bar" style="width:14.6%"></div></div>
+                <span class="city-val">179</span>
+              </div>
+            </div>
+            <div class="info-icon-wrap">
+              <span class="info-icon">i
+                <span class="info-tooltip">All 7 cities confirmed from source data. Lanzhou, China (298 users, 0s engagement) and Singapore (192 users, 4s engagement) excluded — likely bot traffic. Ashburn, VA is an AWS/data center hub but shows strong engagement (6m 24s avg). 1,637 distinct cities total.</span>
+              </span>
+            </div>
+          </div>
+        </div>
+
+        <!-- How Users Arrive -->
+        <div class="panel">
+          <div class="ph"><span class="ph-label">How Users Arrive</span></div>
+          <div class="sankey-wrap">
+            <svg id="sankey-svg" viewBox="0 0 540 375" preserveAspectRatio="xMidYMid meet" xmlns="http://www.w3.org/2000/svg">
+              <!--
+                Min-height layout: each source bar ≥ 35px for label readability.
+                Total bar space: y=10→365 = 355px. Gaps: 5×5px = 25px → 330px bars.
+                Min 35px each = 210px → 120px extra distributed proportionally (8,566 total).
+                  (direct) 39.6% → +47px → 82px  y=10→92    dst y=10→151
+                  google   34.9% → +42px → 77px  y=97→174   dst y=151→275
+                  pa.gov    8.5% → +10px → 45px  y=179→224  dst y=275→305
+                  lms       6.9% →  +8px → 43px  y=229→272  dst y=305→330
+                  bing      2.0% →  +2px → 37px  y=277→314  dst y=330→337
+                  other     8.1% → +10px → 45px  y=319→364  dst y=337→365
+                Destination node: y=10→365 (proportional, 355px total)
+              -->
+
+              <!-- ── Labels (right-aligned, x=142) ── -->
+              <text x="142" y="46"  text-anchor="end" font-family="Open Sans" font-size="11" fill="#1A2B35" font-weight="600">Direct</text>
+              <text x="142" y="59"  text-anchor="end" font-family="Open Sans" font-size="9"  fill="#6B7280">3,390 · 39.6%</text>
+
+              <text x="142" y="129" text-anchor="end" font-family="Open Sans" font-size="11" fill="#1A2B35" font-weight="600">Google</text>
+              <text x="142" y="142" text-anchor="end" font-family="Open Sans" font-size="9"  fill="#6B7280">2,986 · 34.9%</text>
+
+              <text x="142" y="196" text-anchor="end" font-family="Open Sans" font-size="11" fill="#1A2B35" font-weight="600">PA.gov</text>
+              <text x="142" y="209" text-anchor="end" font-family="Open Sans" font-size="9"  fill="#6B7280">728 · 8.5% ↑955%</text>
+
+              <text x="142" y="244" text-anchor="end" font-family="Open Sans" font-size="11" fill="#1A2B35" font-weight="600">SAS Portal</text>
+              <text x="142" y="257" text-anchor="end" font-family="Open Sans" font-size="9"  fill="#6B7280">595 · 6.9%</text>
+
+              <text x="142" y="289" text-anchor="end" font-family="Open Sans" font-size="11" fill="#1A2B35" font-weight="600">Bing</text>
+              <text x="142" y="302" text-anchor="end" font-family="Open Sans" font-size="9"  fill="#6B7280">172 · 2.0%</text>
+
+              <text x="142" y="335" text-anchor="end" font-family="Open Sans" font-size="11" fill="#6B7280" font-weight="600">Other (132 sources)</text>
+              <text x="142" y="348" text-anchor="end" font-family="Open Sans" font-size="9"  fill="#9CA3AF">662 · 7.8%</text>
+
+              <!-- ── Source node bars (x=148, width=15) ── -->
+              <rect x="148" y="10"  width="15" height="82" rx="2" fill="#0A5562"/>
+              <rect x="148" y="97"  width="15" height="77" rx="2" fill="#0D6E7A"/>
+              <rect x="148" y="179" width="15" height="45" rx="2" fill="#1A8FA0"/>
+              <rect x="148" y="229" width="15" height="43" rx="2" fill="#5BA8B5"/>
+              <rect x="148" y="277" width="15" height="37" rx="2" fill="#A8D5DC"/>
+              <rect x="148" y="319" width="15" height="45" rx="2" fill="#9CA3AF"/>
+
+              <!-- ── Flow paths (cubic bezier quads; src right edge x=163, dst x=380, cp x=272) ── -->
+              <!-- (direct): src y=10→92, dst y=10→151 -->
+              <path d="M163,10  C272,10  272,10  380,10  L380,151 C272,151 272,92  163,92  Z" fill="#0A5562" opacity="0.28"/>
+              <!-- google: src y=97→174, dst y=151→275 -->
+              <path d="M163,97  C272,97  272,151 380,151 L380,275 C272,275 272,174 163,174 Z" fill="#0D6E7A" opacity="0.28"/>
+              <!-- pa.gov: src y=179→224, dst y=275→305 -->
+              <path d="M163,179 C272,179 272,275 380,275 L380,305 C272,305 272,224 163,224 Z" fill="#1A8FA0" opacity="0.28"/>
+              <!-- lms: src y=229→272, dst y=305→330 -->
+              <path d="M163,229 C272,229 272,305 380,305 L380,330 C272,330 272,272 163,272 Z" fill="#5BA8B5" opacity="0.28"/>
+              <!-- bing: src y=277→314, dst y=330→337 -->
+              <path d="M163,277 C272,277 272,330 380,330 L380,337 C272,337 272,314 163,314 Z" fill="#A8D5DC" opacity="0.28"/>
+              <!-- other: src y=319→364, dst y=337→365 -->
+              <path d="M163,319 C272,319 272,337 380,337 L380,365 C272,365 272,364 163,364 Z" fill="#9CA3AF" opacity="0.28"/>
+
+              <!-- ── Destination node (x=380, width=15, y=10→365 proportional) ── -->
+              <rect x="380" y="10"  width="15" height="355" rx="2" fill="#0A5562"/>
+
+              <!-- ── Destination label ── -->
+              <text x="400" y="180" font-family="Raleway" font-size="14" fill="#0A5562" font-weight="700">8,533</text>
+              <text x="400" y="195" font-family="Open Sans" font-size="9"  fill="#6B7280">unique users</text>
+              <text x="400" y="208" font-family="Open Sans" font-size="9"  fill="#6B7280">arrived 2025</text>
+
+            </svg>
+          </div>
+          <div class="info-icon-wrap">
+            <span class="info-icon">i
+              <span class="info-tooltip">Source: User_acquisition_First_user_source.pdf (File 15). Top 5 referral sources by unique users, Jan–Dec 2025. "Other" = 132 additional sources (695 users combined). AI tool referrals (ChatGPT 7, Gemini 1, Claude 1, Perplexity 1, Copilot 1 = 11 total) first appeared in 2025 data.</span>
+            </span>
+          </div>
+        </div>
+
+        <!-- Who's Using the ERC -->
+        <div class="panel">
+          <div class="ph"><span class="ph-label">Who's Using the ERC</span></div>
+
+          <div class="prop-bar-wrap">
+            <div class="prop-bar-reg"></div>
+            <div class="prop-bar-anon"></div>
+          </div>
+          <div class="bar-label-row">
+            <span class="blr-reg">6.8% Registered</span>
+            <span class="blr-anon">93.2% Anonymous</span>
+          </div>
+
+          <div class="user-split">
+            <div class="user-block registered">
+              <div class="ub-type">Registered</div>
+              <div class="ub-big">581</div>
+              <div class="ub-pct">6.8% of visitors</div>
+              <div class="ub-metric"><span class="umk">Total pins</span><span class="umv">691</span></div>
+              <div class="ub-metric"><span class="umk">Unique strategies saved</span><span class="umv">259</span></div>
+              <div class="ub-metric"><span class="umk">Citation clicks</span><span class="umv">449</span></div>
+            </div>
+            <div class="user-block anonymous">
+              <div class="ub-type">Anonymous</div>
+              <div class="ub-big">7,952</div>
+              <div class="ub-pct">93.2% of visitors</div>
+              <div class="anon-note">Role, intent, and downstream outcomes are not captured for this group under current platform architecture.</div>
+            </div>
+          </div>
+        </div>
+
+      </div><!-- /reach-panels -->
+    </div><!-- /reach -->
+
+    <!-- ▸ ENGAGEMENT -->
+    <div class="engagement">
+      <div class="section-strip">
+        <h2>Engagement</h2>
+        <span class="sub">Depth of interaction, session quality, and content popularity</span>
+        <span class="strip-pill">Jan–Dec 2025</span>
+      </div>
+      <div class="engagement-panels">
+
+        <!-- Engagement Portrait — true centering funnel -->
+        <div class="panel">
+          <div class="ph"><span class="ph-label">Engagement Portrait</span></div>
+          <div class="funnel-wrap">
+            <!--
+              Symmetric trapezoid funnel. viewBox 500×290.
+              Funnel: top x=30→470 (w=440), bottom x=170→330 (w=160). Narrows 140px each side over 268px height.
+              left(y)  = 30  + 140*(y-10)/268
+              right(y) = 470 - 140*(y-10)/268
+              5 bands × 44px + 4 gaps × 12px = 268px total (y=10→278)
+            -->
+            <svg viewBox="0 0 500 290" preserveAspectRatio="xMidYMid meet" xmlns="http://www.w3.org/2000/svg">
+
+              <!-- Band 1: 8,533  y=10→54 -->
+              <polygon points="30,10 470,10 447,54 53,54" fill="#0A5562"/>
+              <text x="250" y="31" text-anchor="middle" font-family="Open Sans" font-size="8.5" fill="rgba(255,255,255,0.75)" font-weight="700" letter-spacing="0.06em">ARRIVED ON SITE</text>
+              <text x="250" y="47" text-anchor="middle" font-family="Raleway" font-size="15" fill="white" font-weight="900">8,533</text>
+
+              <!-- Band 2: 4,807  y=66→110 -->
+              <polygon points="59,66 441,66 418,110 82,110" fill="#0D6E7A"/>
+              <text x="250" y="87" text-anchor="middle" font-family="Open Sans" font-size="8.5" fill="rgba(255,255,255,0.75)" font-weight="700" letter-spacing="0.06em">CLICKED A STUDY</text>
+              <text x="250" y="103" text-anchor="middle" font-family="Raleway" font-size="15" fill="white" font-weight="900">4,807</text>
+
+              <!-- Band 3: 2,458  y=122→166 -->
+              <polygon points="89,122 411,122 389,166 111,166" fill="#1A8FA0"/>
+              <text x="250" y="143" text-anchor="middle" font-family="Open Sans" font-size="8.5" fill="rgba(255,255,255,0.75)" font-weight="700" letter-spacing="0.06em">BROWSED BY CATEGORY</text>
+              <text x="250" y="159" text-anchor="middle" font-family="Raleway" font-size="15" fill="white" font-weight="900">2,458</text>
+
+              <!-- Band 4: 581  y=178→222 -->
+              <polygon points="118,178 382,178 359,222 141,222" fill="#5BA8B5"/>
+              <text x="250" y="199" text-anchor="middle" font-family="Open Sans" font-size="8.5" fill="rgba(255,255,255,0.75)" font-weight="700" letter-spacing="0.06em">REGISTERED &amp; SAVED CONTENT</text>
+              <text x="250" y="215" text-anchor="middle" font-family="Raleway" font-size="15" fill="white" font-weight="900">581</text>
+
+              <!-- Band 5: 449  y=234→278 -->
+              <polygon points="147,234 353,234 330,278 170,278" fill="#A8D5DC"/>
+              <text x="250" y="255" text-anchor="middle" font-family="Open Sans" font-size="8.5" fill="rgba(255,255,255,0.85)" font-weight="700" letter-spacing="0.06em">CLICKED A CITATION</text>
+              <text x="250" y="271" text-anchor="middle" font-family="Raleway" font-size="15" fill="white" font-weight="900">449</text>
+
+            </svg>
+          </div>
+          <div class="info-icon-wrap">
+            <span class="info-icon">i
+              <span class="info-tooltip">Sources: Engagement_overview.pdf (File 04) for session counts and funnel stages; Events.pdf (File 08) for click_study (4,807), click_category (2,458), click_citation (449); User_acquisition.pdf (File 15) for registered users (581). All figures Jan–Dec 2025.</span>
+            </span>
+          </div>
+        </div>
+
+        <!-- Top Pages -->
+        <div class="panel" style="border-right:none;">
+          <div class="ph"><span class="ph-label">Top Pages by Views</span></div>
+          <div class="chart-wrap">
+            <canvas id="c-pages"></canvas>
+          </div>
+          <div class="info-icon-wrap">
+            <span class="info-icon">i
+              <span class="info-tooltip">Source: Pages_and_screens_Page_path_and_screen_class-2.pdf (File 05/06). Top 8 pages by view count, Jan–Dec 2025. /strategies/pbis (+297.6%) notable outlier — 167 views vs. 42 prior year. All values confirmed from PDF text extraction.</span>
+            </span>
+          </div>
+        </div><!-- /top pages -->
+
+      </div><!-- /engagement-panels -->
+    </div><!-- /engagement -->
+
+    <!-- ▸ IMPACT -->
+    <div class="impact">
+      <div class="impact-label">Impact</div>
+      <div class="impact-body">
+        <strong>Measuring impact remains a challenge for the ERC.</strong> With 93.2% of visitors anonymous, the platform cannot yet track downstream outcomes — which educators applied strategies, for which students, or with what results. Direct impact data is not available from current systems. What is observable: educators engaged at depth sufficient to register, save content, and cite evidence.
+      </div>
+      <div class="impact-stats">
+        <div class="impact-stat"><div class="isv">581</div><div class="isl">Registered</div></div>
+        <div class="impact-stat"><div class="isv">4,807</div><div class="isl">Clicked Evidence</div></div>
+        <div class="impact-stat"><div class="isv">449</div><div class="isl">Cited Sources</div></div>
+        <div class="impact-stat"><div class="isv">259</div><div class="isl">Strategies Saved</div></div>
+      </div>
+    </div>
+
+  </div><!-- /main -->
+
+  <!-- ── SIDEBAR TAB (visible when collapsed) ── -->
+  <button id="sb-tab" title="Show Evidence Base">Evidence Base ⟩</button>
+
+  <!-- ── SIDEBAR: EVIDENCE BASE ── -->
+  <div class="sidebar">
+    <div class="sidebar-hdr">
+      <div class="sidebar-hdr-text">
+        <h2>Evidence Base</h2>
+        <p>Scale, composition &amp; growth</p>
+      </div>
+      <button id="sb-toggle" title="Collapse sidebar">⟩</button>
+    </div>
+
+    <!-- DB Scale -->
+    <div class="sb-block">
+      <div style="display:flex;align-items:center;gap:6px;margin-bottom:clamp(5px,0.5vh,7px);">
+        <div class="sb-lbl" style="margin-bottom:0;">Database Scale — 2025</div>
+        <span class="info-icon tip-below" style="flex-shrink:0;">i
+          <span class="info-tooltip">Strategy counts compared to two peer databases as of 2025. PA ERC: 594 strategies (evidenceforpa.org). Ohio Evidence Database: 332 strategies. Evidence for ESSA (Johns Hopkins): 213 strategies. Source: ERC internal records and public database listings.</span>
+        </span>
+      </div>
+      <div class="comp-row">
+        <span class="ck">PA ERC</span>
+        <div class="comp-bar-wrap"><div class="comp-bar" style="width:100%;background:var(--erc-dark)"></div></div>
+        <span class="cv2">594</span>
+      </div>
+      <div class="comp-row">
+        <span class="ck">Ohio Evidence DB</span>
+        <div class="comp-bar-wrap"><div class="comp-bar" style="width:55.9%;background:var(--gray-lt)"></div></div>
+        <span class="cv2">332</span>
+      </div>
+      <div class="comp-row">
+        <span class="ck">Evidence for ESSA</span>
+        <div class="comp-bar-wrap"><div class="comp-bar" style="width:35.9%;background:var(--gray-lt)"></div></div>
+        <span class="cv2">213</span>
+      </div>
+    </div>
+
+    <!-- ESSA Tiers donut -->
+    <div class="sb-block">
+      <div style="display:flex;align-items:center;gap:6px;margin-bottom:clamp(5px,0.5vh,7px);">
+        <div class="sb-lbl" style="margin-bottom:0;">ESSA Evidence Tiers</div>
+        <span class="info-icon" style="flex-shrink:0;">i
+          <span class="info-tooltip">Tier distribution of the 594 ERC strategies by ESSA evidence level. T1 Strong (~12%), T2 Moderate (~8%), T3 Promising (~25%), T4 Demonstrates a Rationale (~55%). Distribution is approximate — based on visual inspection of the database stats chart; exact tier counts not available in source data.</span>
+        </span>
+      </div>
+      <div class="essa-layout">
+        <div class="essa-donut-wrap"><canvas id="c-essa"></canvas></div>
+        <div class="essa-legend">
+          <div class="essa-li"><div class="essa-dot" style="background:var(--erc-deep)"></div>T1 &nbsp;Strong Evidence</div>
+          <div class="essa-li"><div class="essa-dot" style="background:var(--erc-dark)"></div>T2 &nbsp;Moderate Evidence</div>
+          <div class="essa-li"><div class="essa-dot" style="background:var(--erc-teal)"></div>T3 &nbsp;Promising Evidence</div>
+          <div class="essa-li"><div class="essa-dot" style="background:#A8D5DC"></div>T4 &nbsp;Demonstrates a Rationale</div>
+        </div>
+      </div>
+      <div class="note">Distribution approximate — visual inspection of source chart.</div>
+    </div>
+
+    <!-- Annual Growth chart -->
+    <div class="sb-block grow">
+      <div style="display:flex;align-items:center;gap:6px;margin-bottom:clamp(5px,0.5vh,7px);">
+        <div class="sb-lbl" style="margin-bottom:0;">Database Growth, 2019–2026</div>
+        <span class="info-icon" style="flex-shrink:0;">i
+          <span class="info-tooltip">Annual counts for Strategies, Studies, and Outcomes tracked in the ERC database. Source: ERC evidence Base yoy data.csv (user-confirmed values). Strategies and Studies have no confirmed 2023 data point — lines bridge across that year. Outcomes data begins in 2020.</span>
+        </span>
+      </div>
+      <div class="growth-chart-wrap">
+        <canvas id="c-growth"></canvas>
+      </div>
+      <div class="note">Strategies tracked since 2019. Studies &amp; Outcomes confirmed at 2026 milestone.</div>
+    </div>
+
+  </div><!-- /sidebar -->
+
+</div><!-- /body -->
+</div><!-- /page -->
+
+<script>
+// ── Sidebar expand / collapse ──────────────────────────────────────
+document.getElementById('sb-tab').addEventListener('click', function() {
+  document.getElementById('body').classList.add('sb-expanded');
+  setTimeout(() => { Object.values(Chart.instances).forEach(c => c.resize()); }, 420);
+});
+document.getElementById('sb-toggle').addEventListener('click', function() {
+  document.getElementById('body').classList.remove('sb-expanded');
+  setTimeout(() => { Object.values(Chart.instances).forEach(c => c.resize()); }, 420);
+});
+
+// ── External tooltip handler for Chart.js (uses #global-tip, always on top) ──
+function chartExternalTooltip(context) {
+  const tip = document.getElementById('global-tip');
+  const { chart, tooltip } = context;
+
+  if (tooltip.opacity === 0) { tip.style.display = 'none'; return; }
+
+  const lines = [];
+  if (tooltip.title && tooltip.title.length) lines.push(...tooltip.title);
+  if (tooltip.body) tooltip.body.forEach(b => lines.push(...b.lines));
+  tip.textContent = lines.join('  ');
+  tip.style.display = 'block';
+
+  const rect = chart.canvas.getBoundingClientRect();
+  const x = rect.left + tooltip.caretX;
+  const y = rect.top  + tooltip.caretY;
+  const tw = tip.offsetWidth, th = tip.offsetHeight, m = 10;
+
+  let left = x + m;
+  if (left + tw + m > window.innerWidth) left = x - tw - m;
+  if (left < m) left = m;
+
+  let top = y - th / 2;
+  if (top < m) top = m;
+  if (top + th + m > window.innerHeight) top = window.innerHeight - th - m;
+
+  tip.style.left = left + 'px';
+  tip.style.top  = top  + 'px';
+}
+
+// ── Geography Donut ───────────────────────────────────────────────
+(function(){
+  const ctx = document.getElementById('c-geo').getContext('2d');
+  new Chart(ctx, {
+    type: 'doughnut',
+    data: {
+      labels: ['Pennsylvania','Out of State'],
+      datasets: [{ data:[56,44], backgroundColor:['#0A5562','#1A8FA0'], borderWidth:2, borderColor:'#F2FAFB' }]
+    },
+    options: {
+      responsive:true, maintainAspectRatio:true,
+      cutout:'62%',
+      plugins: {
+        legend:{display:false},
+        tooltip:{
+          enabled: false,
+          external: chartExternalTooltip,
+          callbacks:{label:c=>` ${c.label}: ${c.raw}%`}
+        }
+      }
+    }
+  });
+})();
+
+
+// ── Top Pages ─────────────────────────────────────────────────────
+(function(){
+  const ctx = document.getElementById('c-pages').getContext('2d');
+  const pages = ['/ Home','  /search','  /learn/tiers','  /ecri','  /learn','  /wilson-fdns','  /ewims','  /pbis'];
+  const views = [8589, 1666, 902, 686, 472, 343, 295, 167];
+  const yoy   = ['-1.0%','-21.1%','-14.3%','-7.4%','-20.0%','-9.3%','-7.8%','+297.6%'];
+  const colors = pages.map(() => '#0A5562');
+  new Chart(ctx, {
+    type: 'bar',
+    data: {
+      labels: pages,
+      datasets: [{
+        data: views,
+        backgroundColor: colors,
+        borderWidth: 0,
+        borderRadius: 3,
+        barPercentage: 0.7,
+      }]
+    },
+    options: {
+      indexAxis: 'y',
+      responsive: true, maintainAspectRatio: false,
+      plugins: {
+        legend: { display: false },
+        tooltip: {
+          callbacks: {
+            label: c => ` ${c.raw.toLocaleString()} views`,
+            afterLabel: c => ` YoY: ${yoy[c.dataIndex]}`
+          }
+        }
+      },
+      scales: {
+        x: {
+          grid: { color:'#E4F3F5' },
+          ticks: { font:{size:8,family:'Open Sans'}, color:'#9CA3AF',
+                   callback: v => v >= 1000 ? (v/1000).toFixed(0)+'k' : v },
+          border: { display:false }
+        },
+        y: {
+          grid: { display:false },
+          ticks: { font:{size:9,family:'Open Sans'}, color:'#4A5568' },
+          border: { display:false }
+        }
+      },
+      layout: { padding: { right: 6 } }
+    }
+  });
+})();
+
+// ── ESSA Tiers Donut ──────────────────────────────────────────────
+(function(){
+  const ctx = document.getElementById('c-essa').getContext('2d');
+  new Chart(ctx, {
+    type: 'doughnut',
+    data: {
+      labels: ['T1 Strong','T2 Moderate','T3 Promising','T4 Rationale'],
+      datasets: [{ data:[12,8,25,55], backgroundColor:['#0A5562','#0D6E7A','#1A8FA0','#A8D5DC'], borderWidth:2, borderColor:'#F2FAFB' }]
+    },
+    options: {
+      responsive:true, maintainAspectRatio:true,
+      cutout:'55%',
+      plugins: {
+        legend:{display:false},
+        tooltip:{
+          enabled: false,
+          external: chartExternalTooltip,
+          callbacks:{label:c=>`${c.label} (~${c.raw}% — approximate)`}
+        }
+      }
+    }
+  });
+})();
+
+// ── Database Growth Line Chart ─────────────────────────────────────
+(function(){
+  const ctx = document.getElementById('c-growth').getContext('2d');
+  new Chart(ctx, {
+    type: 'line',
+    data: {
+      labels: ['2019','2020','2021','2022','2023','2024','2025','2026'],
+      datasets: [
+        {
+          label: 'Strategies',
+          //        2019  2020  2021  2022  2023  2024  2025  2026
+          data:   [  114,  153,  221,  383,  null,  491,  559,  594],
+          borderColor:'#0A5562', backgroundColor:'rgba(10,85,98,0.07)',
+          borderWidth:2, pointRadius:3, pointBackgroundColor:'#0A5562',
+          tension:0.3, spanGaps:true, fill:true
+        },
+        {
+          label: 'Studies',
+          //        2019  2020  2021  2022  2023  2024  2025  2026
+          data:   [  145,  200,  298,  445,  null,  603,  676,  750],
+          borderColor:'#E07B20', backgroundColor:'transparent',
+          borderWidth:2, pointRadius:3, pointBackgroundColor:'#E07B20',
+          tension:0.3, spanGaps:true
+        },
+        {
+          label: 'Outcomes',
+          //        2019  2020  2021  2022  2023  2024  2025  2026
+          data:   [ null,  552,  873, 1000, 1680, 1830, 2073, 2284],
+          borderColor:'#6B7280', backgroundColor:'transparent',
+          borderWidth:2, pointRadius:3, pointBackgroundColor:'#6B7280',
+          tension:0.3, spanGaps:true
+        }
+      ]
+    },
+    options: {
+      responsive:true, maintainAspectRatio:false,
+      plugins: {
+        legend: {
+          display:true, position:'bottom',
+          labels:{ boxWidth:8, boxHeight:8, font:{size:8,family:'Open Sans'}, color:'#6B7280', padding:5, usePointStyle:true }
+        },
+        tooltip:{ callbacks:{ label:c=>c.raw!=null?` ${c.dataset.label}: ${c.raw.toLocaleString()}`:null } }
+      },
+      scales: {
+        x:{ grid:{display:false}, ticks:{font:{size:8,family:'Open Sans'},color:'#9CA3AF'}, border:{display:false} },
+        y:{
+          grid:{color:'#E4F3F5'},
+          ticks:{font:{size:8,family:'Open Sans'},color:'#9CA3AF',maxTicksLimit:5,callback:v=>v>=1000?(v/1000).toFixed(1)+'k':v},
+          border:{display:false}
+        }
+      }
+    }
+  });
+})();
+// ── Global tooltip (bypasses overflow:hidden on all panels) ───────
+(function(){
+  const tip = document.createElement('div');
+  tip.id = 'global-tip';
+  document.body.appendChild(tip);
+
+  document.querySelectorAll('.info-icon').forEach(function(icon) {
+    const inner = icon.querySelector('.info-tooltip');
+    if (!inner) return;
+    const text = inner.textContent.trim();
+
+    icon.addEventListener('mouseenter', function() {
+      tip.textContent = text;
+      tip.style.display = 'block';
+
+      const rect = icon.getBoundingClientRect();
+      const tw = tip.offsetWidth;
+      const th = tip.offsetHeight;
+      const margin = 8;
+
+      // Horizontal: align left to icon, clamp so it doesn't overflow viewport
+      let left = rect.left;
+      if (left + tw + margin > window.innerWidth) left = window.innerWidth - tw - margin;
+      if (left < margin) left = margin;
+
+      // Vertical: prefer above, fall back to below if not enough room
+      let top;
+      if (rect.top - th - margin >= margin) {
+        top = rect.top - th - margin;
+      } else {
+        top = rect.bottom + margin;
+      }
+
+      tip.style.left = left + 'px';
+      tip.style.top  = top  + 'px';
+    });
+
+    icon.addEventListener('mouseleave', function() {
+      tip.style.display = 'none';
+    });
+  });
+})();
+</script>
+</body>
+</html>
