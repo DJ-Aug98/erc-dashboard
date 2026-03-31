@@ -277,7 +277,7 @@ html, body {
 
 .cities-lbl { font-size:clamp(7px,0.65vw,9px); font-weight:700; letter-spacing:0.08em; text-transform:uppercase; color:var(--gray); flex-shrink:0; }
 .cities-list { flex:1; min-height:0; display:flex; flex-direction:column; justify-content:space-between; }
-.city-row { display:flex; align-items:center; gap:6px; padding:clamp(2px,0.22vh,3px) 0; border-bottom:1px solid var(--erc-lt); font-size:clamp(9px,0.85vw,11px); }
+.city-row { display:flex; align-items:center; gap:6px; padding:clamp(1px,0.15vh,2px) 0; border-bottom:1px solid var(--erc-lt); font-size:clamp(8px,0.78vw,10px); }
 .city-row:last-child { border-bottom:none; }
 .city-rank { width:14px; height:14px; border-radius:50%; background:var(--erc-lt); color:var(--erc-dark); font-size:clamp(7px,0.62vw,8px); font-weight:700; display:flex; align-items:center; justify-content:center; flex-shrink:0; }
 .city-name { flex:1; color:var(--text-sm); overflow:hidden; white-space:nowrap; text-overflow:ellipsis; }
@@ -298,47 +298,48 @@ html, body {
 
 /* ════════ WHO'S USING ════════ */
 .prop-bar-wrap {
-  height: clamp(44px,5.5vh,68px);
+  height: clamp(22px,3vh,44px);
   background: var(--erc-lt); border-radius:4px; overflow:hidden;
   display: flex; flex-shrink:0;
-  margin-bottom: clamp(5px,0.5vh,8px);
+  margin-bottom: clamp(3px,0.35vh,6px);
 }
 .prop-bar-reg { background:var(--erc-dark); width:6.8%; }
 .prop-bar-anon { background:var(--gray-lt); flex:1; }
 
-.bar-label-row { display:flex; justify-content:space-between; font-size:clamp(8px,0.72vw,10px); color:var(--gray); margin-top:4px; margin-bottom:clamp(5px,0.6vh,8px); flex-shrink:0; }
+.bar-label-row { display:flex; justify-content:space-between; font-size:clamp(8px,0.72vw,10px); color:var(--gray); margin-top:2px; margin-bottom:clamp(3px,0.4vh,6px); flex-shrink:0; }
 .bar-label-row .blr-reg { color:var(--erc-dark); font-weight:700; }
 .bar-label-row .blr-anon { color:var(--gray); }
 
 .user-split {
   display:grid; grid-template-columns:1fr 1fr;
   flex:1; min-height:0;
-  gap:clamp(5px,0.6vw,8px); flex:1; min-height:0;
+  gap:clamp(4px,0.5vw,7px);
+  overflow:hidden;
 }
 .user-block {
   border:1px solid var(--border); border-radius:6px;
-  display:flex; flex-direction:column; justify-content:center;
-  padding:clamp(7px,0.7vh,10px) clamp(8px,0.8vw,11px);
-  display:flex; flex-direction:column; overflow:hidden;
+  display:flex; flex-direction:column;
+  padding:clamp(5px,0.55vh,9px) clamp(7px,0.7vw,10px);
+  overflow:hidden; min-height:0;
 }
 .user-block.registered { border-color:var(--erc-teal); background:var(--erc-pale); }
 .user-block.anonymous  { border-color:var(--border); background:var(--gray-pale); }
 .ub-type { font-size:clamp(7px,0.65vw,9px); font-weight:700; letter-spacing:0.1em; text-transform:uppercase; margin-bottom:2px; }
 .registered .ub-type { color:var(--erc-dark); }
 .anonymous  .ub-type { color:var(--gray); }
-.ub-big { font-family:'Raleway',sans-serif; font-size:clamp(32px,3.2vw,48px); font-weight:900; line-height:1; margin-bottom:2px; }
+.ub-big { font-family:'Raleway',sans-serif; font-size:clamp(20px,2.4vw,38px); font-weight:900; line-height:1; margin-bottom:2px; }
 .registered .ub-big { color:var(--erc-dark); }
 .anonymous  .ub-big { color:var(--gray); }
-.ub-pct { font-size:clamp(11px,1.05vw,14px); margin-bottom:8px; }
+.ub-pct { font-size:clamp(9px,0.9vw,12px); margin-bottom:5px; }
 .registered .ub-pct { color:var(--erc-teal); }
 .anonymous  .ub-pct { color:var(--gray-lt); }
-.ub-metric { display:flex; justify-content:space-between; align-items:baseline; padding:clamp(3px,0.4vh,6px) 0; border-bottom:1px solid var(--border); font-size:clamp(9px,0.85vw,11px); }
+.ub-metric { display:flex; justify-content:space-between; align-items:baseline; padding:clamp(2px,0.25vh,4px) 0; border-bottom:1px solid var(--border); font-size:clamp(8px,0.78vw,10px); }
 .ub-metric:last-child { border-bottom:none; }
 .ub-metric .umk { color:var(--gray); }
 .ub-metric .umv { font-weight:700; }
 .registered .ub-metric .umv { color:var(--erc-dark); }
 .anonymous  .ub-metric .umv { color:var(--gray); }
-.anon-note { font-size:clamp(9px,0.85vw,11px); color:var(--gray); line-height:1.5; margin-top:8px; }
+.anon-note { font-size:clamp(8px,0.72vw,10px); color:var(--gray); line-height:1.4; margin-top:4px; }
 
 /* ════════ FUNNEL ════════ */
 .funnel-wrap {
